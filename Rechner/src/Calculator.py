@@ -79,7 +79,7 @@ class Schnittrechner:
 
 
 if __name__ == "__main__":
-    input = input("Bitte gib den Namen der PDF Datei ein: ")
+    input = str(input("Bitte gib den Namen der PDF Datei ein (inklusive des .pdf): "))
     path = os.getcwd()
     pdf_path = os.path.join(path, "Daten", input)
     rechner = Schnittrechner(pdf_path)
