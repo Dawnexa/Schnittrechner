@@ -1,38 +1,49 @@
 # Schnittrechner 
-Dieses Python-Skript berechnet den Durchschnitt von Noten aus einer PDF-Datei. Es ist speziell für Sammelzeugnisse der Universität Wien entwickelt worden. (Weitere Universitäten in Bearbeitung)
 
-## Anforderungen 
+Hello! This is the repository for the Schnittrechner project. This project is a Python script that calculates the average of grades from a PDF file. It is specifically designed for collective certificates from the University of Vienna. (More universities in progress)
 
-- Python 3.*
-- Die Python-Bibliotheken `os`, `numpy`, `fitz` und `re` müssen installiert sein.
+More information about the project can be found in the various README files in this repository.
 
-## Installation
+## README files in different languages
 
-Um die benötigten Bibliotheken zu installieren, führen Sie den folgenden Befehl aus:
-```console
-pip3 install numpy PyMuPDF
-```
+- [README_de.md](README_de.md) (German)
+- [README_eng.md](README_eng.md) (English)
 
-## Vorbereitung 
+## Contributing
 
-Bevor Sie das Skript ausführen, erstellen Sie bitte einen Ordner namens "Daten" im selben Verzeichnis, in dem sich das Skript befindet. Platzieren Sie die PDF-Datei(en) mit den Sammelzeugnissen in diesem Ordner.
+We welcome contributions of all kinds and are grateful for the time you spend to enhance our project. Here are some guidelines to help you get started:
 
-## Verwendung 
+### Reporting Bugs
 
-Führen Sie das Skript aus und geben Sie den Namen der PDF-Datei ein, wenn Sie dazu aufgefordert werden. Die PDF-Datei sollte sich im Ordner "Daten" befinden und die Noten und ECTS-Punkte sollten im Format "Note (Dezimalzahl) ECTS" angegeben sein.
+If you find a bug, please first check our [issue list](https://github.com/Dawnexa/Automated-Pore-Detection-ML/issues) to see if someone else has already reported it. If not, you can create a new issue, providing as many details as possible about the bug.
 
-Das Skript liest die PDF-Datei, extrahiert die Noten und ECTS-Punkte und berechnet den gewichteten Durchschnitt der Noten.
+### Suggesting Enhancements
 
-## Beispiel 
-```console
-Bitte gib den Namen der PDF Datei ein: Sammelzeugnis
-Dein Notenschnitt ist: 2.7
-```
+If you have an idea for a new feature or an improvement to an existing feature, we would love to hear about it. Please create a new issue and describe your idea there. Provide as many details as possible to help us understand and implement your idea.
 
-In diesem Beispiel befindet sich die Datei "Sammelzeugnis.pdf" im Ordner "Daten". Das Skript berechnet den Durchschnitt der Noten und gibt "Dein Notenschnitt ist: 2.7" aus.
+### Submitting Pull Requests
 
-## Lizenz
+If you want to contribute code yourself, you can do this by submitting a pull request (PR). Here are the steps you should follow:
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert. Das bedeutet, dass Sie es frei verwenden, ändern und verteilen können, solange Sie die Bedingungen der Lizenz einhalten. Eine Kopie der Lizenz finden Sie in der Datei [LICENSE](LICENSE) in diesem Repository.
+1. Fork the repository and create a new branch for your changes.
+2. Make your changes in this branch.
+3. Submit a PR and describe your changes in the PR form.
 
-Bitte beachten Sie, dass dieses Projekt ohne jegliche Garantie bereitgestellt wird. Die Autoren sind nicht verantwortlich für eventuelle Schäden oder Verluste, die durch die Verwendung des Projekts entstehen könnten.
+Please note that your PR may not be accepted immediately. We may ask you to make some changes before we can accept your PR. We appreciate your patience and your willingness to work with us to improve the project.
+
+## License
+
+This project is licensed under the terms of the MIT license. The full license text is available in the [LICENSE](LICENSE) file.
+
+The MIT license is a permissive license that is short and to the point. It lets people do anything they want with your code as long as they provide attribution back to you and don’t hold you liable.
+
+Please note that this license does not include any datasets or external resources used in the project. These may have their own licenses. Please refer to the respective resources for details.
+
+## Authors
+
+- [Dawnexa](https://github.com/Dawnexa)
+
+## Acknowledgements
+
+Currently none.
+
