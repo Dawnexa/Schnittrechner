@@ -39,6 +39,8 @@ The MIT license is a permissive license that is short and to the point. It lets 
 
 Please note that this license does not include any datasets or external resources used in the project. These may have their own licenses. Please refer to the respective resources for details.
 
+Note that this project is provided without any warranty. The authors are not responsible for any damages or losses that could arise from using the project.
+
 ## Authors
 
 - [Dawnexa](https://github.com/Dawnexa)
