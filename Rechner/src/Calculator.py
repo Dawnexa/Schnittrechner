@@ -4,41 +4,22 @@ import os
 import re
 
 
-# # read pdf
-
-# # Get the number of pages that the pdf has (in this case 2)
-# doc = fitz.open("Sammelzeugnis.pdf")
-
-# ects_raw = []
-# grade_raw = []
-# # get the date from all pages
-# for i in range(doc.page_count):
-#     page = doc.load_page(i) 
-#     ects_raw.append(re.findall(r"(\d+.\d+) ECTS", page.get_text()))
-#     grade_raw.append(re.findall(r"Note: (\d+)", page.get_text()))
-
-# ects = []
-# for i, data in enumerate(ects_raw):
-#     for j in data:
-#         ects.append(j)
-
-
-# grades = []
-# for i, data in enumerate(grade_raw):
-#     for j in data:
-#         grades.append(j)
-
-# print(ects)
-# print(grades)
-
-
-# def calculation(ects, grades):
-#     ects = np.array(ects, dtype=float)
-#     grades = np.array(grades, dtype=float)
-#     average_grade = np.sum(ects * grades) / np.sum(ects)
-#     return average_grade
 
 class Schnittrechner:
+    """Class to calculate the average grade of a PDF file
+
+    Args:
+        pdf_path (str): Path to PDF file
+    
+    Attributes:
+        pdf_path (str): Path to PDF file
+        ects_raw (list): List of ECTS from PDF file
+        grade_raw (list): List of grades from PDF file
+        ects (list): List of ECTS as float
+        grades (list): List of grades as float
+        average_grade (float): Average grade
+        doc (fitz.Document): PDF file
+    """
     def __init__(self, pdf_path):
         self.pdf_path = pdf_path
         self.ects_raw = []
@@ -49,6 +30,10 @@ class Schnittrechner:
         self.doc = fitz.open(self.pdf_path)
 
     def get_ects(self):
+        """Get ECTS from PDF file
+        
+        Returns:
+            list: ECTS"""
         for i in range(self.doc.page_count):
             page = self.doc.load_page(i) 
             self.ects_raw.append(re.findall(r"(\d+.\d+) ECTS", page.get_text()))
@@ -58,6 +43,10 @@ class Schnittrechner:
         return self.ects
     
     def get_grades(self):
+        """Get grades from PDF file
+
+        Returns:
+            list: Grades"""
         for i in range(self.doc.page_count):
             page = self.doc.load_page(i) 
             self.grade_raw.append(re.findall(r"Note: (\d+)", page.get_text()))
@@ -67,21 +56,33 @@ class Schnittrechner:
         return self.grades
     
     def calculation_given(self, ects, grades):
+        """Calculate average grade with given ECTS and grades
+
+        Args:
+            ects (list): ECTS
+            grades (list): Grades
+
+        Returns:
+            float: Average grade
+        """
         ects = np.array(ects, dtype=float)
         grades = np.array(grades, dtype=float)
         self.average_grade = np.sum(ects * grades) / np.sum(ects)
         return self.average_grade
     
     def calculation(self):
+        """Calculate average grade with ECTS and grades from PDF file
+        
+        Returns:
+            float: Average grade"""
         self.average_grade = np.sum(np.array(self.ects,dtype=float) * np.array(self.grades, dtype=float)) / np.sum(np.array(self.ects, dtype=float))
         return self.average_grade
 
-
-
-if __name__ == "__main__":
-    input = str(input("Bitte gib den Namen der PDF Datei ein (inklusive des .pdf): "))
+def main():
+    input_1 = str(input("Bitte gib den Namen der PDF Datei ein: "))
     path = os.getcwd()
-    pdf_path = os.path.join(path, "Daten", input)
+    input_1 = input_1 + ".pdf"
+    pdf_path = os.path.join(path, "Daten", input_1)
     rechner = Schnittrechner(pdf_path)
     ects = rechner.get_ects()
     # print(np.array(ects, dtype=float))
@@ -90,25 +91,6 @@ if __name__ == "__main__":
     average_grade = rechner.calculation()
     print(f"Dein Notenschnitt ist: {average_grade}")
 
-# change datatype of ects and grades to float
-# ects = np.array(ects, dtype=float)
-# grades = np.array(grades, dtype=float)
 
-# print(ects)
-# print(grades)
-
-
-# calculate the average grade (ects * grade) / sum(ects)
-# average_grade = np.sum(ects * grades) / np.sum(ects)
-# print(average_grade)
-# page = doc.load_page(0)
-# print(doc.page_count)
-
-
-
-
-# Another way of doing it. 
-# arr = []
-# for i in ects:
-#     arr = arr+i
-# print(arr)
+if __name__ == "__main__":
+    main()
