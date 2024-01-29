@@ -78,19 +78,14 @@ class Schnittrechner:
         self.average_grade = np.sum(np.array(self.ects,dtype=float) * np.array(self.grades, dtype=float)) / np.sum(np.array(self.ects, dtype=float))
         return self.average_grade
 
-def main():
-    input_1 = str(input("Bitte gib den Namen der PDF Datei ein: "))
-    path = os.getcwd()
-    input_1 = input_1 + ".pdf"
-    pdf_path = os.path.join(path, "Daten", input_1)
-    rechner = Schnittrechner(pdf_path)
-    ects = rechner.get_ects()
-    # print(np.array(ects, dtype=float))
-    grades = rechner.get_grades()
-    # print(np.array(grades, dtype=float))
-    average_grade = rechner.calculation()
-    print(f"Dein Notenschnitt ist: {average_grade}")
-
-
-if __name__ == "__main__":
-    main()
+    def main(self, filepath):
+        path = os.getcwd()
+        filepath = filepath + ".pdf"
+        pdf_path = os.path.join(path, "Daten", filepath)
+        rechner = Schnittrechner(pdf_path)
+        ects = rechner.get_ects()
+        # print(np.array(ects, dtype=float))
+        grades = rechner.get_grades()
+        # print(np.array(grades, dtype=float))
+        average_grade = rechner.calculation()
+        return average_grade
