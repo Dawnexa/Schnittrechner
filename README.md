@@ -6,8 +6,8 @@ More information about the project can be found in the various README files in t
 
 ## README files in different languages
 
-- [README_de.md](README_de.md) (German)
-- [README_eng.md](README_eng.md) (English)
+- [README_de.md](READMEs/README_de.md) (German)
+- [README_eng.md](READMEs/README_eng.md) (English)
 
 ## Contributing
 

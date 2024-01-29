@@ -10,6 +10,7 @@ import Calculator
 
 
 class MainWindow(QWidget):
+    """Main window of the application"""
     def __init__(self):
         super().__init__()
         self.resize(250, 250)
@@ -42,18 +43,8 @@ class MainWindow(QWidget):
         layout.addWidget(self.output_table) # Adding a widget to the layout (in this case it is a table for the output of the average grades)
 
 
-
-
-
-    def get(self):
-        text = self.input.text()
-        path = os.getcwd()
-        filepath = text + ".pdf"
-        pdf_path = os.path.join(path, "Daten", filepath)
-        self.input_for_calculation = pdf_path
-        # self.textbox.setText(pdf_path)
-
     def calculation(self):
+        """Calculate the average grade for all files in the list widget and add the result to the table widget"""
         for i, item in enumerate(self.file_list_it):
             self.input_for_calculation = item
             rechner = Calculator.Schnittrechner(self.input_for_calculation)
@@ -66,7 +57,7 @@ class MainWindow(QWidget):
             self.output_table.setColumnCount(len(self.file_list_it))
             self.output_table.setRowCount(2)
             self.output_table.setItem(i, 0, QTableWidgetItem(filename))
-            self.output_table.setItem(i, 1, QTableWidgetItem(str(average_grade)))
+            self.output_table.setItem(i, 1, QTableWidgetItem(str(round(average_grade, 2))))
             self.output_table.setHorizontalHeaderLabels(["Datei", "Notenschnitt"])
             self.output_table.resizeColumnsToContents()
             self.output_table.resizeRowsToContents()
@@ -78,6 +69,7 @@ class MainWindow(QWidget):
                         item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def open_file_dialog(self):
+        """Open a file dialog for selecting files"""
         script_dir = os.path.dirname(__file__)
         path = os.path.join(script_dir, "..", "..")
         path = os.path.join(path, "Daten")
