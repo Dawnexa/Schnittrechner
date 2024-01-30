@@ -1,6 +1,6 @@
-from PyQt6.QtGui import *
-from PyQt6.QtWidgets import *
-from PyQt6.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 import sys
 import os 
 from pathlib import Path
@@ -49,16 +49,18 @@ class MainWindow(QWidget):
             self.input_for_calculation = item
             rechner = Calculator.Schnittrechner(self.input_for_calculation)
             ects = rechner.get_ects()
+            sum_ects = rechner.get_sum_ects()
             grades = rechner.get_grades()
             average_grade = rechner.calculation()
             # Get the filename from the path
             filename = os.path.basename(self.input_for_calculation)
             # self.outputlist.addItem(f"Der Notenschnitt zur Datei: \"{filename}\" beträgt {average_grade:.2f} ")
-            self.output_table.setColumnCount(len(self.file_list_it))
+            self.output_table.setColumnCount(len(self.file_list_it) + 1)
             self.output_table.setRowCount(2)
             self.output_table.setItem(i, 0, QTableWidgetItem(filename))
             self.output_table.setItem(i, 1, QTableWidgetItem(str(round(average_grade, 2))))
-            self.output_table.setHorizontalHeaderLabels(["Datei", "Notenschnitt"])
+            self.output_table.setItem(i, 2, QTableWidgetItem(str(round(sum_ects, 2))))
+            self.output_table.setHorizontalHeaderLabels(["Dateiname", "Schnitt", "ECTS"])
             self.output_table.resizeColumnsToContents()
             self.output_table.resizeRowsToContents()
             # Center the text in the table for all elements in the table

@@ -54,6 +54,13 @@ class Schnittrechner:
             for j in data:
                 self.grades.append(j)
         return self.grades
+    def get_sum_ects(self):
+        """Get sum of ECTS from PDF file
+
+        Returns:
+            float: Sum of ECTS"""
+        self.sum_ects = np.sum(np.array(self.ects, dtype=float))
+        return self.sum_ects
     
     def calculation_given(self, ects, grades):
         """Calculate average grade with given ECTS and grades
