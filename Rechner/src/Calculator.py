@@ -122,6 +122,17 @@ class Schnittrechner:
             return self.average_grade
         
     def get_some_ects(self):
+        """Get ECTS from PDF file
+
+        Returns:
+            self.vo_ects (float): ECTS for VO
+            self.ue_ects (float): ECTS for UE
+            self.pue_etcs (float): ECTS for PUE
+            self.vu_ects (float): ECTS for VU
+            self.lp_ects (float): ECTS for LP
+            self.modulprüfung_ects (float): ECTS for Modulprüfung
+            self.se_ects (float): ECTS for SE
+        """
         for i in range(self.doc.page_count):
             page = self.doc.load_page(i)
             text = page.get_text()
@@ -151,8 +162,3 @@ class Schnittrechner:
         average_grade = rechner.calculation()
         return average_grade
     
-
-if __name__ == "__main__":
-    pdf_path = os.path.join(os.getcwd(), "Daten", "test.pdf")
-    rechner = Schnittrechner(pdf_path)
-    ects = rechner.get_ects()

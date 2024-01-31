@@ -59,6 +59,9 @@ def get_ects_per_stuff(string:str):
         ects_pue (list): ECTS for PUE
         ects_vu (list): ECTS for VU
         ects_lp (list): ECTS for LP
+        ects_modulpruefung (list): ECTS for Modulprüfung
+        ects_se (list): ECTS for SE
+        
     """
         
     # Teilen Sie den Text in Zeilen auf
@@ -71,7 +74,7 @@ def get_ects_per_stuff(string:str):
     ects_vu = []
     ects_lp = []
     ects_modulpruefung = []
-    ects_se = []
+    ects_se = [] 
 
     # Suchen Sie nach ECTS-Punkten für VO
     match_vo = re.findall(r'VO .*? (\d+\.\d+) ECTS', single_line_text)
