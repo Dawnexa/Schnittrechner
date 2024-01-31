@@ -19,6 +19,13 @@ class Schnittrechner:
         grades (list): List of grades as float
         average_grade (float): Average grade
         doc (fitz.Document): PDF file
+
+    Important methods:
+        get_ects: Get ECTS from PDF file
+        get_grades: Get grades from PDF file
+        get_sum_ects: Get sum of ECTS from PDF file
+        calculation_given: Calculate average grade with given ECTS and grades
+        calculation: Calculate average grade with ECTS and grades from PDF file
     """
     def __init__(self, pdf_path):
         self.pdf_path = pdf_path
@@ -29,6 +36,21 @@ class Schnittrechner:
         self.average_grade = 0
         self.doc = fitz.open(self.pdf_path)
 
+    @property
+    def pdf_path(self):
+        return self._pdf_path
+    
+    @pdf_path.setter
+    def pdf_path(self, pdf_path):
+        if not os.path.exists(pdf_path):
+            raise FileNotFoundError("The file does not exist")
+        elif not pdf_path.endswith(".pdf"):
+            raise TypeError("The file is not a PDF file")
+        elif not pdf_path:
+            raise ValueError("The path is empty")
+        else:
+            self._pdf_path = pdf_path
+            
     def get_ects(self):
         """Get ECTS from PDF file
         
@@ -54,6 +76,7 @@ class Schnittrechner:
             for j in data:
                 self.grades.append(j)
         return self.grades
+    
     def get_sum_ects(self):
         """Get sum of ECTS from PDF file
 
