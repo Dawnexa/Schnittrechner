@@ -15,10 +15,6 @@ To install the required libraries, run the following command:
 pip3 install numpy PyMuPDF PyQt6
 ```
 
-## Preparation
-
-Before running the script, please create a folder named "Data" in the top directory of this repository. Place the PDF file(s) with the collective certificates in this folder.
-
 ## Usage
 
 Run the [Schnittrechner.py](Rechner/src/Schnittrechner.py) script. A window will open where you can select the PDF files. After selecting the files, click on the "Calculate" button. The PDF file should be in the "Data" folder and the grades and ECTS points should be indicated in the format "Grade (decimal number) ECTS".

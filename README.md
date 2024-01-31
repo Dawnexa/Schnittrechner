@@ -11,25 +11,18 @@ More information about the project can be found in the various README files in t
 
 ## Contributing
 
-We welcome contributions of all kinds and are grateful for the time you spend to enhance our project. Here are some guidelines to help you get started:
+If you want to contribute to the project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file first.
 
-### Reporting Bugs
 
-If you find a bug, please first check our [issue list](https://github.com/Dawnexa/Automated-Pore-Detection-ML/issues) to see if someone else has already reported it. If not, you can create a new issue, providing as many details as possible about the bug.
+## Code of Conduct
 
-### Suggesting Enhancements
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
 
-If you have an idea for a new feature or an improvement to an existing feature, we would love to hear about it. Please create a new issue and describe your idea there. Provide as many details as possible to help us understand and implement your idea.
+You can find the Code of Conduct in different languages here:
 
-### Submitting Pull Requests
+- [CODE_OF_CONDUCT_de.md](CODE_OF_CONDUCT_GER.md) (German)
+- [CODE_OF_CONDUCT_eng.md](CODE_OF_CONDUCT_ENG.md) (English)
 
-If you want to contribute code yourself, you can do this by submitting a pull request (PR). Here are the steps you should follow:
-
-1. Fork the repository and create a new branch for your changes.
-2. Make your changes in this branch.
-3. Submit a PR and describe your changes in the PR form.
-
-Please note that your PR may not be accepted immediately. We may ask you to make some changes before we can accept your PR. We appreciate your patience and your willingness to work with us to improve the project.
 
 ## License
 
@@ -42,6 +35,8 @@ Please note that this license does not include any datasets or external resource
 Note that this project is provided without any warranty. The authors are not responsible for any damages or losses that could arise from using the project.
 
 ## Authors
+
+If you contributed to the project, please add your name to the list below with a link to your GitHub profile.
 
 - [Dawnexa](https://github.com/Dawnexa)
 

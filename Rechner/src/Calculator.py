@@ -35,6 +35,10 @@ class Schnittrechner:
         self.grades = []
         self.average_grade = 0
         self.doc = fitz.open(self.pdf_path)
+        self.pue_etcs = 0 # PUEs counter
+        self.vo_ects = 0 # VOs counter
+        self.ue_ects = 0 # UEs counter
+        self.lp_ects = 0 # Lps counter
 
     @property
     def pdf_path(self):
@@ -50,7 +54,7 @@ class Schnittrechner:
             raise ValueError("The path is empty")
         else:
             self._pdf_path = pdf_path
-            
+
     def get_ects(self):
         """Get ECTS from PDF file
         
