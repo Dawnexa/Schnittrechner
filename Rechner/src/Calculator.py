@@ -1,7 +1,7 @@
-import numpy as np 
 import fitz
 import os 
 import re
+from utils import *
 
 
 
@@ -39,6 +39,9 @@ class Schnittrechner:
         self.vo_ects = 0 # VOs counter
         self.ue_ects = 0 # UEs counter
         self.lp_ects = 0 # Lps counter
+        self.vu_ects = 0 # VUs counter
+        self.modulprüfung_ects = 0 # Modulprüfungen counter
+        self.se_ects = 0
 
     @property
     def pdf_path(self):
@@ -86,31 +89,55 @@ class Schnittrechner:
 
         Returns:
             float: Sum of ECTS"""
-        self.sum_ects = np.sum(np.array(self.ects, dtype=float))
+        if len(self.ects) == 0:
+            return 0
+        else:
+            self.sum_ects = get_sum(self.ects)
         return self.sum_ects
     
-    def calculation_given(self, ects, grades):
-        """Calculate average grade with given ECTS and grades
+    # def calculation_given(self, ects, grades):
+    #     """Calculate average grade with given ECTS and grades
 
-        Args:
-            ects (list): ECTS
-            grades (list): Grades
+    #     Args:
+    #         ects (list): ECTS
+    #         grades (list): Grades
 
-        Returns:
-            float: Average grade
-        """
-        ects = np.array(ects, dtype=float)
-        grades = np.array(grades, dtype=float)
-        self.average_grade = np.sum(ects * grades) / np.sum(ects)
-        return self.average_grade
+    #     Returns:
+    #         float: Average grade
+    #     """
+    #     ects = np.array(ects, dtype=float)
+    #     grades = np.array(grades, dtype=float)
+    #     self.average_grade = np.sum(ects * grades) / np.sum(ects)
+    #     return self.average_grade
     
     def calculation(self):
         """Calculate average grade with ECTS and grades from PDF file
         
         Returns:
             float: Average grade"""
-        self.average_grade = np.sum(np.array(self.ects,dtype=float) * np.array(self.grades, dtype=float)) / np.sum(np.array(self.ects, dtype=float))
-        return self.average_grade
+        if get_sum(self.ects) == 0:
+            return 0
+        else:
+            self.average_grade = get_multsum(self.ects, self.grades) / get_sum(self.ects)
+            return self.average_grade
+        
+    def get_some_ects(self):
+        for i in range(self.doc.page_count):
+            page = self.doc.load_page(i)
+            text = page.get_text()
+            # print(text)
+            
+            ects_vo, ects_ue, ects_pue, ects_vu, ects_lp, ects_modulpruefung, ects_se = get_ects_per_stuff(text)
+            self.vo_ects += get_sum(ects_vo)
+            self.ue_ects += get_sum(ects_ue)
+            self.pue_etcs += get_sum(ects_pue)
+            self.vu_ects += get_sum(ects_vu)
+            self.lp_ects += get_sum(ects_lp)
+            self.modulprüfung_ects += get_sum(ects_modulpruefung)
+            self.se_ects += get_sum(ects_se)
+
+        return self.vo_ects, self.ue_ects, self.pue_etcs, self.vu_ects, self.lp_ects, self.modulprüfung_ects, self.se_ects
+
 
     def main(self, filepath):
         path = os.getcwd()
@@ -123,3 +150,9 @@ class Schnittrechner:
         # print(np.array(grades, dtype=float))
         average_grade = rechner.calculation()
         return average_grade
+    
+
+if __name__ == "__main__":
+    pdf_path = os.path.join(os.getcwd(), "Daten", "test.pdf")
+    rechner = Schnittrechner(pdf_path)
+    ects = rechner.get_ects()
