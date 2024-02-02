@@ -1,26 +1,64 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from qtwidgets import AnimatedToggle, Toggle
 import sys
 import os 
 from pathlib import Path
+import csv
+from datetime import date
 
+from utils import *
 import Calculator
 
 
-
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
     """Main window of the application"""
     def __init__(self):
         super().__init__()
+
+
+
         self.resize(250, 250)
         self.setWindowTitle("Schnittrechner")
         self.setGeometry(100, 100, 400, 100)
 
+        # Create a central widget
+        central_widget = QWidget(self)
+        self.setCentralWidget(central_widget)
 
- 
-        layout = QVBoxLayout() # Creating a layout (in this case a vertical one)
-        self.setLayout(layout) # Setting the layout to the window
+        layout = QVBoxLayout(central_widget)  # Set the layout to the central widget
+
+        # Create a menu bar
+        filebar = QMenu(self)
+
+        openFile = QAction("Open Datafile", self)
+        openFile.setShortcut("Ctrl+O")
+        openFile.triggered.connect(self.open_file)
+
+        saveFile = QAction("Save Datafile", self)
+        saveFile.setShortcut("Ctrl+S")
+        saveFile.triggered.connect(self.save_file)
+        
+
+        filebar.addAction(openFile)
+        filebar.addAction(saveFile)
+
+
+
+        # Create a toolbar
+        toolbar = QToolBar(self)
+        self.addToolBar(toolbar)
+
+        # Create an action for the toolbar
+        openfilemenu = QAction("File", self)
+        openfilemenu.setMenu(filebar)
+
+
+        # Add the action to the toolbar
+        toolbar.addAction(openfilemenu)
+
+
         # file selection
 
         file_browse = QPushButton('Browse') # Creating a button widget
@@ -30,23 +68,35 @@ class MainWindow(QWidget):
         self.file_list = QListWidget(self) # Creating a list widget
         self.file_list_it = [] # Creating a list for the items in the list widget
 
+        # Set the file list as a textbox
+        self.data_list = QListWidget(self)
+        self.data_list_it = []
+
         calculate_button = QPushButton("Calculate") # Creating a button widget for calculating the average grade
         calculate_button.clicked.connect(self.calculation) # Connecting the button to a function (in this case the function is for calculating the average grade)
 
         self.output_table = QTableWidget(self)
         self.output_table.setEditTriggers(QAbstractItemView.NoEditTriggers) # Set the table widget to not be editable
 
-        # Hinzufügen eines Schalters für den Dark-Modus
-        self.dark_mode_switch = QCheckBox("Dark Mode")
-        self.dark_mode_switch.stateChanged.connect(self.toggle_dark_mode)
+
+        self.toggle_2 = AnimatedToggle(
+            checked_color="#FFB000",
+            pulse_checked_color="#44FFB000"
+        )
+
+        self.toggle_2.stateChanged.connect(self.toggle_dark_mode)
+        self.toggle_2.setFixedSize(100, 50)
 
 
-        layout.addWidget(self.dark_mode_switch)
+        
+        layout.addWidget(self.toggle_2)
         layout.addWidget(QLabel('Selected Files:'), 0) # Adding a widget to the layout (in this case a label aka text)
         layout.addWidget(self.file_list, 1) # Adding a widget to the layout (in this case it is a ListWidget aka a list of items, in this case the items are the files)
         layout.addWidget(file_browse, 2) # Adding a widget to the layout (in this case it is a button for browsing files)
         layout.addWidget(calculate_button) # Adding a widget to the layout (in this case it is a button for calculating the average grade)
         layout.addWidget(self.output_table) # Adding a widget to the layout (in this case it is a table for the output of the average grades)
+        layout.addWidget(QLabel('Data:'), 3) # Adding a widget to the layout (in this case a label aka text)
+        layout.addWidget(self.data_list, 4) # Adding a widget to the layout (in this case it is a ListWidget aka a list of items, in this case the items are the data)
     
 
 # Explanation of the stylesheet:
@@ -164,6 +214,24 @@ class MainWindow(QWidget):
             else:
                 self.output_table.setItem(i, 4, QTableWidgetItem(str(round(sum_ects, 2)))) # Add the sum of the ECTS to the table widget
 
+            data_header = ["Dateiname", "Schnitt", "Relevant ECTS", "Non-relevant ECTS", "Total ECTS", "Datum"] # Set the header labels for the table widget
+
+            ects = rechner.get_ects_per_semester() # Get the ECTS per semester from the PDF file
+            for key, value in ects.items():
+                data_header.append(key)
+
+            self.data = [data_header] # Create a list for the data
+            today = date.today()
+
+            data = [filename, average_grade, ects_relevant, ects_not_relevant, sum_ects, today.strftime("%d/%m/%Y")] 
+
+            for key, value in ects.items():
+                daten = get_sum(value)
+                print(daten)
+                data.append(daten)
+
+            self.data.append(data) # Add the data to the list
+
 
             self.output_table.setHorizontalHeaderLabels(["Dateiname", "Schnitt", "Relevant ECTS", "Non-relevant ECTS", "Total ECTS"]) # Set the header labels for the table widget
             self.output_table.resizeColumnsToContents() # Resize the columns of the table widget to fit the content
@@ -175,6 +243,7 @@ class MainWindow(QWidget):
                     item = self.output_table.item(i, j)
                     if item is not None:
                         item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+
 
     def open_file_dialog(self):
         """Open a file dialog for selecting files"""
@@ -194,6 +263,43 @@ class MainWindow(QWidget):
                 path = Path(filename)
                 self.file_list.addItem(str(path))
                 self.file_list_it.append(str(path))
+
+    def open_file(self):
+        """Open a file"""
+        filename, _ = QFileDialog.getOpenFileName(
+            self,
+            "Open File",
+            "",
+            "Files (*.csv)" # Maybe add support for other file types
+        )
+
+        if filename:
+            with open(filename, "r") as file:
+                reader = csv.reader(file)
+                self.Data = list(reader)
+                self.data_list.clear()
+                for i in self.Data:
+                    self.data_list.addItem(str(i))
+                    print(str(i))
+
+    def save_file(self):
+        """Save a file"""
+        filename, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save File",
+            "",
+            "Files (*.csv)" # Maybe add support for other file types
+        )
+
+        if filename:
+            with open(filename, "w") as file:
+                writer = csv.writer(file)
+                writer.writerows(self.data)
+
+
+
+
+
 
 app = QApplication([]) # Creating an application (you dont need the sys.argv if you dont want to use command line arguments, if you want to use them you need to pass them to the QApplication)
 window = MainWindow() # Creating a window (in this case the window is the main window)

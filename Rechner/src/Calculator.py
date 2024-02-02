@@ -148,6 +148,27 @@ class Schnittrechner:
             self.se_ects += get_sum(ects_se)
 
         return self.vo_ects, self.ue_ects, self.pue_etcs, self.vu_ects, self.lp_ects, self.modulprüfung_ects, self.se_ects
+    
+
+    def get_ects_per_semester(self):
+        """Get ECTS from PDF file
+
+        Returns:
+            ects (list): ECTS
+        """
+        text_all = ""
+        for i in range(self.doc.page_count):
+            page = self.doc.load_page(i) 
+            text = page.get_text()
+            text_all += text
+
+        semester = []
+        ects = {}
+        semester = get_semesters(text_all, semester)
+        ects = extract_ects_per_semester(text_all)
+        return ects
+
+            
 
 
     def main(self, filepath):
@@ -161,4 +182,5 @@ class Schnittrechner:
         # print(np.array(grades, dtype=float))
         average_grade = rechner.calculation()
         return average_grade
+
     
