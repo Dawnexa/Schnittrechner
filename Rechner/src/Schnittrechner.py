@@ -79,6 +79,8 @@ class MainWindow(QMainWindow):
         self.output_table.setEditTriggers(QAbstractItemView.NoEditTriggers) # Set the table widget to not be editable
 
 
+        self.data = [] # Creating a list for the data
+
         self.toggle_2 = AnimatedToggle(
             checked_color="#FFB000",
             pulse_checked_color="#44FFB000"
@@ -214,23 +216,47 @@ class MainWindow(QMainWindow):
             else:
                 self.output_table.setItem(i, 4, QTableWidgetItem(str(round(sum_ects, 2)))) # Add the sum of the ECTS to the table widget
 
-            data_header = ["Dateiname", "Schnitt", "Relevant ECTS", "Non-relevant ECTS", "Total ECTS", "Datum"] # Set the header labels for the table widget
 
-            ects = rechner.get_ects_per_semester() # Get the ECTS per semester from the PDF file
-            for key, value in ects.items():
-                data_header.append(key)
+            if self.Data == []:
+                data_header = ["Dateiname", "Schnitt", "Relevant ECTS", "Non-relevant ECTS", "Total ECTS", "Datum"] # Set the header labels for the table widget
 
-            self.data = [data_header] # Create a list for the data
-            today = date.today()
+                ects = rechner.get_ects_per_semester() # Get the ECTS per semester from the PDF file
+                for key, value in ects.items():
+                    data_header.append(key)
 
-            data = [filename, average_grade, ects_relevant, ects_not_relevant, sum_ects, today.strftime("%d/%m/%Y")] 
+                self.data.append(data_header) # Add the header labels to the list
+                today = date.today()
 
-            for key, value in ects.items():
-                daten = get_sum(value)
-                print(daten)
-                data.append(daten)
+                data = [filename, average_grade, ects_relevant, ects_not_relevant, sum_ects, today.strftime("%d/%m/%Y")] 
 
-            self.data.append(data) # Add the data to the list
+                for key, value in ects.items():
+                    daten = get_sum(value)
+                    print(daten)
+                    data.append(daten)
+
+                self.data.append(data) # Add the data to the list
+                
+            elif self.Data != []:
+
+                self.data = self.Data
+                data_header = ["Dateiname", "Schnitt", "Relevant ECTS", "Non-relevant ECTS", "Total ECTS", "Datum"] # Set the header labels for the table widget
+
+                ects = rechner.get_ects_per_semester() # Get the ECTS per semester from the PDF file
+                for key, value in ects.items():
+                    data_header.append(key)
+
+                self.data.append(data_header) # Add the header labels to the list
+                today = date.today()
+
+                data = [filename, average_grade, ects_relevant, ects_not_relevant, sum_ects, today.strftime("%d/%m/%Y")] 
+
+                for key, value in ects.items():
+                    daten = get_sum(value)
+                    print(daten)
+                    data.append(daten)
+
+                self.data.append(data) # Add the data to the list
+
 
 
             self.output_table.setHorizontalHeaderLabels(["Dateiname", "Schnitt", "Relevant ECTS", "Non-relevant ECTS", "Total ECTS"]) # Set the header labels for the table widget
