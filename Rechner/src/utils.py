@@ -1,5 +1,5 @@
 """Numpy sucks so I made my own functions to do what I need"""
-
+import fitz
 import re
 
 
@@ -148,7 +148,7 @@ def extract_ects_per_semester(text):
                 ects_per_semester[current_semester].append(ects)
 
     return ects_per_semester
-def get_semesters(string, semesters):
+def get_semesters(string:str, semesters:list):
     """Get semesters from string
 
     Args:
@@ -176,3 +176,148 @@ def get_semesters(string, semesters):
     for semester in SoSes:
         semesters.append(f'SoSe {semester}')
     return semesters
+
+def extract_relevant_ects_per_semester(text:str):
+    # Split the text into lines
+    lines = text.split('\n')
+
+    # Initialize the dictionary that will store the ECTS points per semester
+    ects_per_semester = {}
+    current_semester = None
+
+    for line in lines:
+        # Check if the line contains a semester
+        semester_match = re.search(r"(WiSe \d{4}|SoSe \d{4})", line)
+        if semester_match:
+            current_semester = semester_match.group(0)
+            modulprüfung_match = re.search(r"(Modulprüfung)", line)
+            other_lv_match = re.search(r"(PUE|VO|UE|LP|SE)", line)
+
+            if modulprüfung_match:
+                current_lv = "Modulprüfung"
+
+            elif other_lv_match:
+                current_lv = other_lv_match.group(0)
+
+            elif not modulprüfung_match and not other_lv_match:
+                # Check the previous line for the LV type
+                previous_line = lines[lines.index(line) - 1]
+                other_lv_match = re.search(r"(PUE|VO|UE|LP|SE|Modulprüfung)", previous_line)
+                if other_lv_match:
+                    current_lv = other_lv_match.group(0)
+            
+            if current_semester not in ects_per_semester:
+                ects_per_semester[current_semester] = []
+        else:
+            # Check if the line contains ECTS points (after the semester has been found, then you check from line to line if there are ECTS points if you find a new semester you change the semester)
+            ects_match = re.search(r"(\d+(\.\d{1,2})?) ECTS", line)
+            if ects_match and current_semester is not None:
+                ects = float(ects_match.group(1))
+                ects_per_semester[current_semester].append(ects)
+                ects_per_semester[current_semester].append(current_lv)
+
+    return ects_per_semester
+
+def get_relevant_ects_per_semester(doc_path:str):
+    """Get ECTS from PDF file
+
+    Args:
+        doc_path (str): Path to PDF file
+
+    Returns:
+        ects (list): ECTS
+    """
+
+    # Load the PDF file fitz 
+    doc = fitz.open(doc_path)
+    text_all = ""
+    for i in range(doc.page_count):
+        page = doc.load_page(i) 
+        text = page.get_text()
+        text_all += text
+
+    ects_per_semester = extract_relevant_ects_per_semester(text_all)
+    # print(ects_per_semester)
+
+    ects_per_semester_sorted = {}
+
+    for key, value in ects_per_semester.items():
+        for i in range(len(value)):
+            if value[i] == "VO":
+                ects_per_semester_sorted[key, "VO"] = ects_per_semester_sorted.get((key, "VO"), 0) + value[i-1]
+            elif value[i] == "UE":
+                ects_per_semester_sorted[key, "UE"] = ects_per_semester_sorted.get((key, "UE"), 0) + value[i-1]
+            elif value[i] == "PUE":
+                ects_per_semester_sorted[key, "PUE"] = ects_per_semester_sorted.get((key, "PUE"), 0) + value[i-1]
+            elif value[i] == "LP":
+                ects_per_semester_sorted[key, "LP"] = ects_per_semester_sorted.get((key, "LP"), 0) + value[i-1]
+            elif value[i] == "Modulprüfung":
+                ects_per_semester_sorted[key, "Modulprüfung"] = ects_per_semester_sorted.get((key, "Modulprüfung"), 0) + value[i-1]
+            elif value[i] == "SE":
+                ects_per_semester_sorted[key, "SE"] = ects_per_semester_sorted.get((key, "SE"), 0) + value[i-1]
+
+    return ects_per_semester_sorted
+
+def get_sum_ects2(ects_per_semester_sorted):
+    """Get the sum of ECTS points per semester
+    
+    Args:
+        ects_per_semester_sorted (dict): ECTS points per semester
+        
+    Returns:
+        dict: Sum of ECTS points per semester
+    """
+    ects_list = []
+    for key, value in ects_per_semester_sorted.items():
+        # Get the semester and the LV type
+        semester, lv = key
+        # Get the ECTS points
+        ects = value
+        ects_list.append((semester, lv, ects))
+
+    # Create a dict per semester
+    ects_per_semester = {}
+    for semester, lv, ects in ects_list:
+        if semester not in ects_per_semester:
+            ects_per_semester[semester] = {}
+        ects_per_semester[semester][lv] = ects
+
+    
+
+    # get the sum of ects per semester and subtract the ects from the pue
+    ects_per_semester_sum = {}
+    for semester, lv in ects_per_semester.items():
+        ects_per_semester_sum[semester] = sum(lv.values()) - lv.get("PUE", 0)
+
+    return ects_per_semester_sum
+
+def get_sum_ects69(ects_per_semester_sorted):
+    """Get the sum of ECTS points per semester
+    
+    Args:
+        ects_per_semester_sorted (dict): ECTS points per semester
+        
+    Returns:
+        dict: Sum of ECTS points per semester
+    """
+    ects_list = []
+    for key, value in ects_per_semester_sorted.items():
+        # Get the semester and the LV type
+        semester, lv = key
+        # Get the ECTS points
+        ects = value
+        ects_list.append((semester, lv, ects))
+
+    # Create a dict per semester
+    ects_per_semester = {}
+    for semester, lv, ects in ects_list:
+        if semester not in ects_per_semester:
+            ects_per_semester[semester] = {}
+        ects_per_semester[semester][lv] = ects
+
+    return ects_per_semester
+
+
+
+if __name__ == "__main__":
+    print(get_sum_ects(get_relevant_ects_per_semester("/Users/dawnexa/Documents/Privater Shit/Programmieren/Python/Schnittrechner/Daten/Sammelzeugnis.pdf")))

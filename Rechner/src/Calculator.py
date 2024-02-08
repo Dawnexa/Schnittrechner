@@ -167,8 +167,28 @@ class Schnittrechner:
         semester = get_semesters(text_all, semester)
         ects = extract_ects_per_semester(text_all)
         return ects
+    
+    def semester_ects(self):
+        """Get ECTS from PDF file
 
-            
+        Returns:
+            ects (dic): ECTS
+        """
+        sorted_ects = get_relevant_ects_per_semester(self.doc)
+        sum_ects_semester = get_sum_ects2(sorted_ects)
+
+        return sum_ects_semester
+    
+    def get_ects_per_semester420(self):
+        """Get ECTS from PDF file
+
+        Returns:
+            ects (dic): ECTS
+        """
+        sorted_ects = get_relevant_ects_per_semester(self.doc)
+        ects_per_semester = get_sum_ects69(sorted_ects)
+        return ects_per_semester
+
 
 
     def main(self, filepath):
