@@ -21,14 +21,14 @@ def get_sum(list:list):
         return sum
 
 def get_multsum(list1:list, list2:list):
-    """Get sum of two lists
+    """Get sum of list1 * list2
 
     Args:
         list1 (list): List 1
         list2 (list): List 2
 
     Returns:
-        float: Sum of list 1 and list 2
+        float: Sum of list1 * list2
     """
     sum = 0
     for i, j in zip(list1, list2):
@@ -113,7 +113,7 @@ def get_ects_per_stuff(string:str):
 
     return ects_vo, ects_ue, ects_pue, ects_vu, ects_lp, ects_modulpruefung, ects_se
 
-def extract_ects_per_semester(text):
+def extract_ects_per_semester(text:str):
     """
     Extracts the ECTS points per semester from a given text.
 
@@ -178,6 +178,16 @@ def get_semesters(string:str, semesters:list):
     return semesters
 
 def extract_relevant_ects_per_semester(text:str):
+    """ Extracts the relevant ECTS points per semester from a given text.
+
+    The text should contain lines that either contain a semester (WiSe YYYY or SoSe YYYY) or a number of ECTS points.
+
+    Args:
+        text (str): The text from which the ECTS points should be extracted.
+
+    Returns:
+        dict: A dictionary containing a list of associated ECTS points for each found semester.
+    """
     # Split the text into lines
     lines = text.split('\n')
 
@@ -219,13 +229,13 @@ def extract_relevant_ects_per_semester(text:str):
     return ects_per_semester
 
 def get_relevant_ects_per_semester(doc_path:str):
-    """Get ECTS from PDF file
+    """Get the relevant ECTS points per semester
 
     Args:
-        doc_path (str): Path to PDF file
+        doc_path (str): Path to the PDF file
 
     Returns:
-        ects (list): ECTS
+        dict: Relevant ECTS points per semester
     """
 
     # Load the PDF file fitz 
@@ -258,7 +268,7 @@ def get_relevant_ects_per_semester(doc_path:str):
 
     return ects_per_semester_sorted
 
-def get_sum_ects2(ects_per_semester_sorted):
+def get_sum_ects2(ects_per_semester_sorted:str):
     """Get the sum of ECTS points per semester
     
     Args:
@@ -291,14 +301,14 @@ def get_sum_ects2(ects_per_semester_sorted):
 
     return ects_per_semester_sum
 
-def get_sum_ects69(ects_per_semester_sorted):
-    """Get the sum of ECTS points per semester
-    
+def get_semester_ects(ects_per_semester_sorted:str):
+    """Get the ECTS points per semester, per LV type
+
     Args:
         ects_per_semester_sorted (dict): ECTS points per semester
-        
+
     Returns:
-        dict: Sum of ECTS points per semester
+        dict: ECTS points per semester, per LV type
     """
     ects_list = []
     for key, value in ects_per_semester_sorted.items():
@@ -316,8 +326,3 @@ def get_sum_ects69(ects_per_semester_sorted):
         ects_per_semester[semester][lv] = ects
 
     return ects_per_semester
-
-
-
-if __name__ == "__main__":
-    print(get_sum_ects(get_relevant_ects_per_semester("/Users/dawnexa/Documents/Privater Shit/Programmieren/Python/Schnittrechner/Daten/Sammelzeugnis.pdf")))

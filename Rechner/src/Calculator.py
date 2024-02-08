@@ -179,14 +179,14 @@ class Schnittrechner:
 
         return sum_ects_semester
     
-    def get_ects_per_semester420(self):
+    def get_semester_ects_per_LV(self):
         """Get ECTS from PDF file
 
         Returns:
             ects (dic): ECTS
         """
         sorted_ects = get_relevant_ects_per_semester(self.doc)
-        ects_per_semester = get_sum_ects69(sorted_ects)
+        ects_per_semester = get_semester_ects(sorted_ects)
         return ects_per_semester
 
 

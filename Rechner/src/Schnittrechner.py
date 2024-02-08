@@ -60,7 +60,7 @@ class MyMplCanvas(FigureCanvas):
         self.axes.bar(x_axis, y_axis, align='center', width=0.2, alpha=0.5, color='darkblue')
         self.axes.set_xlabel('Subject')
         self.axes.set_ylabel('ECTS')
-        self.axes.legend(loc='upper left')
+        # self.axes.legend(loc='upper left')
         self.draw()
 
 
@@ -178,14 +178,14 @@ class MainWindow(QMainWindow):
         vlayout_buttons.addWidget(self.refresh_button)
 
         # Create a horizontal layout
-        hlayout = QHBoxLayout()
+        hlayout_filelist_buttons = QHBoxLayout()
 
         # Add the vertical layout for the file list and the vertical layout for the buttons to the horizontal layout
-        hlayout.addLayout(vlayout_file_list)
-        hlayout.addLayout(vlayout_buttons)
+        hlayout_filelist_buttons.addLayout(vlayout_file_list)
+        hlayout_filelist_buttons.addLayout(vlayout_buttons)
 
         # Add the horizontal layout to the main layout
-        layout.addLayout(hlayout)
+        layout.addLayout(hlayout_filelist_buttons)
         
         self.canvas = MyMplCanvas(y_axis=self.ects) # Create an instance of the MyMplCanvas class
         self.canvas.setFixedHeight(400) # Set the height of the canvas widget
@@ -297,7 +297,7 @@ class MainWindow(QMainWindow):
             average_grade = rechner.calculation() # Calculate the average grade
             ects_vo, ects_ue, ects_pue, ects_vu, ects_lp, ects_module, ects_se = rechner.get_some_ects() # Get the ECTS for VO, UE, PUE, VU and LP from the PDF file
 
-            ects_relevant = ects_vo + ects_ue + ects_vu + ects_lp + ects_module + ects_se - ects_pue# Get the relevant ECTS from the PDF file
+            ects_relevant = ects_vo + ects_ue + ects_vu + ects_lp + ects_module + ects_se - ects_pue # Get the relevant ECTS from the PDF file
             ects_not_relevant = ects_pue # Get the not relevant ECTS from the PDF file
 
 
@@ -333,7 +333,8 @@ class MainWindow(QMainWindow):
 
 
             self.sum_ects = rechner.semester_ects()
-            self.raw_ects = rechner.get_ects_per_semester420()
+            self.raw_ects = rechner.get_semester_ects_per_LV()
+
             for key, value in self.sum_ects.items():
                 self.ects_Plot.append(value)
 
@@ -454,12 +455,13 @@ class MainWindow(QMainWindow):
         self.canvas.plot_semester(x_axis=self.subjects_semester_plot, y_axis=self.ects_semester_plot)
 
     def semester_choose(self, item):
+        """Plot the ECTS per semester"""
         self.ects_semester_plot = []
         self.subjects_semester_plot = []
         semester = item.text()
         for key, value in self.raw_ects.items():
             if key == semester:
-                dumb_list = value 
+                dumb_list = value
 
         for key, element in dumb_list.items():
             self.subjects_semester_plot.append(key)
