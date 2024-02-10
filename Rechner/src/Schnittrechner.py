@@ -1,18 +1,20 @@
+# Standard library imports
+import sys
+import os
+import csv
+from datetime import date
+from pathlib import Path
+
+# Third party imports
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from qtwidgets import AnimatedToggle, Toggle
-import sys
-import os 
-from pathlib import Path
-import csv
-from datetime import date
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.ticker import MultipleLocator
 
+# Local application imports
 from utils import *
 import Calculator
 
@@ -81,6 +83,7 @@ class MainWindow(QMainWindow):
         self.ects_semester_plot = []
         self.subjects_semester_plot = []
         self.sum_ects = {}
+        self.data_list = []
 
         # Create a central widget
         central_widget = QWidget(self)
@@ -123,6 +126,7 @@ class MainWindow(QMainWindow):
         # file selection
         file_browse = QPushButton('Browse') # Creating a button widget
         # file_browse.setFixedWidth(100) # Set the width of the button widget
+        file_browse.setFixedHeight(33) # Set the height of the button widget
         file_browse.clicked.connect(self.open_file_dialog) # Connecting the button to a function (in this case the function is for opening a file dialog)
 
         # set the file list as a textbox
@@ -133,10 +137,12 @@ class MainWindow(QMainWindow):
 
         self.refresh_button = QPushButton("Refresh")
         # self.refresh_button.setFixedWidth(100)
+        self.refresh_button.setFixedHeight(33)
         self.refresh_button.clicked.connect(self.plot)
 
         calculate_button = QPushButton("Calculate") # Creating a button widget for calculating the average grade
         # calculate_button.setFixedWidth(100) # Set the width of the button widget
+        calculate_button.setFixedHeight(33) # Set the height of the button widget
         calculate_button.clicked.connect(self.calculation) # Connecting the button to a function (in this case the function is for calculating the average grade)
 
         self.file_list_it = [] # Creating a list for the items in the list widget
@@ -159,6 +165,7 @@ class MainWindow(QMainWindow):
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.clicked.connect(self.plot)
 
+        layout.addWidget(QLabel('Dark Mode:'))
         layout.addWidget(self.toggle_2)
 
         # Create a vertical layout for the label and the file list
@@ -429,8 +436,7 @@ class MainWindow(QMainWindow):
                 self.Data = list(reader)
                 self.data_list.clear()
                 for i in self.Data:
-                    self.data_list.addItem(str(i))
-                    print(str(i))
+                    self.data_list.append(i)
 
     def save_file(self):
         """Save a file"""
@@ -471,8 +477,6 @@ class MainWindow(QMainWindow):
 
 
         
-
-
 
 app = QApplication([]) # Creating an application (you dont need the sys.argv if you dont want to use command line arguments, if you want to use them you need to pass them to the QApplication)
 window = MainWindow() # Creating a window (in this case the window is the main window)
