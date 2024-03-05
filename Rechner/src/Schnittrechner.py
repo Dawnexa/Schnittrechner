@@ -223,9 +223,8 @@ class MainWindow(QMainWindow):
         # Add the horizontal layout for the plot and the output list to the main layout
         layout.addLayout(hlayout_plot_output)
 
-# Explanation of the stylesheet:
-        
-    """ For dark mode:
+    """Explanation of the stylesheet:
+         For dark mode:
 
         # For all QWidget elements in the application
         QWidget {
@@ -244,8 +243,8 @@ class MainWindow(QMainWindow):
             # Set the text color to #ffffff (white)
             color: #ffffff;
         }
-    """
-    """ For light mode:
+        
+         For light mode:
         # For all QWidget elements in the application
         QWidget {
             # Set the background color to #ffffff (white)
