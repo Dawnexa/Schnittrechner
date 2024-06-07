@@ -162,19 +162,24 @@ def get_semesters(string:str, semesters:list):
     # Listen zum Speichern der Semester
     WiSes = []
     SoSes = []
+    
+    # Kombinieren Sie alle Zeilen in einer einzigen Zeichenkette und ersetzen Sie Zeilenumbrüche durch Leerzeichen
+    text = ' '.join(lines)
+
     # Suchen Sie nach Semestern
-    for line in lines:
-        match = re.findall(r'WiSe (\d{4})', line)
-        if match:
-            WiSes.extend(match)
-        match = re.findall(r'SoSe (\d{4})', line)
-        if match:
-            SoSes.extend(match)
+    match = re.findall(r'WiSe\s*(\d{4})', text)
+    if match:
+        WiSes.extend(match)
+    match = re.findall(r'SoSe\s*(\d{4})', text)
+    if match:
+        SoSes.extend(match)
     # Create a list of semesters
     for semester in WiSes:
         semesters.append(f'WiSe {semester}')
     for semester in SoSes:
         semesters.append(f'SoSe {semester}')
+    print(semesters)
+    print("lol")
     return semesters
 
 def extract_relevant_ects_per_semester(text:str):
