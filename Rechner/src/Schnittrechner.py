@@ -223,8 +223,9 @@ class MainWindow(QMainWindow):
         # Add the horizontal layout for the plot and the output list to the main layout
         layout.addLayout(hlayout_plot_output)
 
-    """Explanation of the stylesheet:
-         For dark mode:
+# Explanation of the stylesheet:
+        
+    """ For dark mode:
 
         # For all QWidget elements in the application
         QWidget {
@@ -243,8 +244,8 @@ class MainWindow(QMainWindow):
             # Set the text color to #ffffff (white)
             color: #ffffff;
         }
-        
-         For light mode:
+    """
+    """ For light mode:
         # For all QWidget elements in the application
         QWidget {
             # Set the background color to #ffffff (white)
@@ -475,7 +476,6 @@ class MainWindow(QMainWindow):
         self.canvas.plot_semester(x_axis=self.subjects_semester_plot, y_axis=self.ects_semester_plot)
 
 
-        
 
 app = QApplication([]) # Creating an application (you dont need the sys.argv if you dont want to use command line arguments, if you want to use them you need to pass them to the QApplication)
 window = MainWindow() # Creating a window (in this case the window is the main window)
