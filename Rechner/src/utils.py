@@ -132,22 +132,53 @@ def extract_ects_per_semester(text:str):
     # Initialize the dictionary that will store the ECTS points per semester
     ects_per_semester = {}
     current_semester = None
+    accepted_years = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"]
 
-    for line in lines:
-        # Check if the line contains a semester
-        semester_match = re.search(r"(WiSe \d{4}|SoSe \d{4})", line)
-        if semester_match:
-            current_semester = semester_match.group(0)
-            if current_semester not in ects_per_semester:
-                ects_per_semester[current_semester] = []
-        else:
-            # Check if the line contains ECTS points (after the semester has been found, then you check from line to line if there are ECTS points if you find a new semester you change the semester)
-            ects_match = re.search(r"(\d+(\.\d{1,2})?) ECTS", line)
-            if ects_match and current_semester is not None:
-                ects = float(ects_match.group(1))
-                ects_per_semester[current_semester].append(ects)
+    for i in range(len(lines)):
+        line = lines[i]
+
+        # Check if the line contains a year (WiSe YYYY or SoSe YYYY)
+        year_match = re.search(r"\b\d{4}\b", line)
+        ects_match = re.search(r"(\d+(\.\d{1,2})?) ECTS", line)
+
+        # Check if the year is in the accepted years
+        current_year = None
+        ects_search = False
+        if year_match:
+            current_year = year_match.group(0)
+
+        if ects_match:
+            ects_search = True
+
+
+        if not ects_search and current_year not in accepted_years:
+            continue
+
+        if year_match or ects_search:
+            if year_match:
+                year = year_match.group(0)
+                # Check if the line contains a semester
+                semester_match = False
+                semester_match = re.search(r"(WiSe|SoSe)", line)
+                if semester_match:
+                    current_semester = semester_match.group(0) + " " + year
+                    if current_semester not in ects_per_semester:
+                        ects_per_semester[current_semester] = []
+                else:
+                    semester_match = re.search(r"(WiSe|SoSe)", lines[i - 1])
+                    if semester_match:
+                        current_semester = semester_match.group(0) + " " + year
+                        if current_semester not in ects_per_semester:
+                            ects_per_semester[current_semester] = []
+            elif ects_search:
+                # Check if the line contains ECTS points (after the semester has been found, then you check from line to line if there are ECTS points if you find a new semester you change the semester)
+                ects_match = re.search(r"(\d+(\.\d{1,2})?) ECTS", line)
+                if ects_match and current_semester is not None:
+                    ects = float(ects_match.group(1))
+                    ects_per_semester[current_semester].append(ects)
 
     return ects_per_semester
+
 def get_semesters(string:str, semesters:list):
     """Get semesters from string
 
@@ -199,30 +230,107 @@ def extract_relevant_ects_per_semester(text:str):
     # Initialize the dictionary that will store the ECTS points per semester
     ects_per_semester = {}
     current_semester = None
+    accepted_years = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"]
+    keywords = ["VO", "UE", "PUE", "LP", "SE", "Modulprüfung", "VU"]
 
-    for line in lines:
+    for i in range(len(lines)):
+        line = lines[i]
         # Check if the line contains a semester
-        semester_match = re.search(r"(WiSe \d{4}|SoSe \d{4})", line)
+        semester_match = re.search(r"(WiSe|SoSe)", line)
         if semester_match:
-            current_semester = semester_match.group(0)
-            modulprüfung_match = re.search(r"(Modulprüfung)", line)
-            other_lv_match = re.search(r"(PUE|VO|UE|LP|SE)", line)
+            year_match = re.search(r"\b\d{4}\b", line)
+            current_year = False 
+            if year_match:
+                current_year = year_match.group(0)
+            if current_year not in accepted_years and current_year:
+                continue
 
-            if modulprüfung_match:
-                current_lv = "Modulprüfung"
+            if year_match:
+                current_semester = semester_match.group(0) + " " + year_match.group(0)
+                modulprüfung_match = re.search(r"(Modulprüfung)", line)
+                line_words = line.split()
+                other_lv_match = None
 
-            elif other_lv_match:
-                current_lv = other_lv_match.group(0)
+                for word in line_words:
+                    if word in keywords:
+                        other_lv_match = word
+                        break
 
-            elif not modulprüfung_match and not other_lv_match:
-                # Check the previous line for the LV type
-                previous_line = lines[lines.index(line) - 1]
-                other_lv_match = re.search(r"(PUE|VO|UE|LP|SE|Modulprüfung)", previous_line)
-                if other_lv_match:
-                    current_lv = other_lv_match.group(0)
-            
-            if current_semester not in ects_per_semester:
-                ects_per_semester[current_semester] = []
+                if modulprüfung_match:
+                    current_lv = "Modulprüfung"
+
+                elif other_lv_match:
+                    current_lv = other_lv_match
+                    if current_lv == "VO":
+                        print("LOL")
+
+                elif not modulprüfung_match and not other_lv_match:
+                    # Check the previous line for the LV type
+                    previous_line = lines[lines.index(line) - 1]
+                    line_words = previous_line.split()
+                    other_lv_match = None
+
+                    for word in line_words:
+                        if word in keywords:
+                            other_lv_match = word
+                            break
+
+                    if other_lv_match:
+                        current_lv = other_lv_match
+                        if current_lv == "VO":
+                            print("LOL")
+                
+                if current_semester not in ects_per_semester:
+                    ects_per_semester[current_semester] = []
+            else:
+                line = lines[i + 1]
+                year_match = re.search(r"\b\d{4}\b", line)
+                current_year = None 
+                if year_match:
+                    current_year = year_match.group(0)
+                if current_year not in accepted_years:
+                    continue
+
+                if year_match:
+                    line = lines[i]
+                    current_semester = semester_match.group(0) + " " + year_match.group(0)
+                    modulprüfung_match = re.search(r"(Modulprüfung)", line)
+                    line_words = line.split()
+                    other_lv_match = None
+
+                    for word in line_words:
+                        if word in keywords:
+                            other_lv_match = word
+                            break
+
+                    if modulprüfung_match:
+                        current_lv = "Modulprüfung"
+
+                    elif other_lv_match:
+                        current_lv = other_lv_match
+                        if current_lv == "VO":
+                            print("LOL")
+
+                    elif not modulprüfung_match and not other_lv_match:
+                        # Check the previous line for the LV type
+                        previous_line = lines[lines.index(line) - 1]
+                        line_words = line.split()
+                        other_lv_match = None
+
+                        for word in line_words:
+                            if word in keywords:
+                                other_lv_match = word
+                                break
+
+                        if other_lv_match:
+                            current_lv = other_lv_match
+                            if current_lv == "VO":
+                                print("LOL")
+                    
+                    if current_semester not in ects_per_semester:
+                        ects_per_semester[current_semester] = []
+
+
         else:
             # Check if the line contains ECTS points (after the semester has been found, then you check from line to line if there are ECTS points if you find a new semester you change the semester)
             ects_match = re.search(r"(\d+(\.\d{1,2})?) ECTS", line)
@@ -230,6 +338,9 @@ def extract_relevant_ects_per_semester(text:str):
                 ects = float(ects_match.group(1))
                 ects_per_semester[current_semester].append(ects)
                 ects_per_semester[current_semester].append(current_lv)
+
+
+                
 
     return ects_per_semester
 
@@ -270,6 +381,8 @@ def get_relevant_ects_per_semester(doc_path:str):
                 ects_per_semester_sorted[key, "Modulprüfung"] = ects_per_semester_sorted.get((key, "Modulprüfung"), 0) + value[i-1]
             elif value[i] == "SE":
                 ects_per_semester_sorted[key, "SE"] = ects_per_semester_sorted.get((key, "SE"), 0) + value[i-1]
+            elif value[i] == "VU":
+                ects_per_semester_sorted[key, "VU"] = ects_per_semester_sorted.get((key, "VU"), 0) + value[i-1]
 
     return ects_per_semester_sorted
 

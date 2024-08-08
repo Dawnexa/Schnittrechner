@@ -15,7 +15,7 @@ pip3 install numpy PyMuPDF PyQt5
 
 ## Verwendung
 
-Führen Sie das [Schnittrechner.py](Rechner/src/Schnittrechner.py) Skript aus. Ein Fenster öffnet sich, in dem Sie die PDF-Dateien auswählen können. Nachdem Sie die Dateien ausgewählt haben, klicken Sie auf den Button "Berechnen". Die PDF-Datei sollte sich im Ordner "Data" befinden und die Noten und ECTS-Punkte sollten im Format "Note (Dezimalzahl) ECTS" angegeben sein.
+Führen Sie das [Schnittrechner.py](../Rechner/src/Schnittrechner.py) Skript aus. Ein Fenster öffnet sich, in dem Sie die PDF-Dateien auswählen können. Nachdem Sie die Dateien ausgewählt haben, klicken Sie auf den Button "Berechnen". Die PDF-Datei sollte sich im Ordner "Data" befinden und die Noten und ECTS-Punkte sollten im Format "Note (Dezimalzahl) ECTS" angegeben sein.
 
 Das Skript liest die PDF-Datei, extrahiert die Noten und ECTS-Punkte und berechnet den gewichteten Durchschnitt.
 
@@ -25,6 +25,6 @@ Dieses Projekt ist unter der MIT-Lizenz lizenziert. Dies bedeutet, dass Sie es f
 
 Bitte beachten Sie, dass dieses Projekt ohne jegliche Garantie zur Verfügung gestellt wird. Die Autoren sind nicht verantwortlich für Schäden oder Verluste, die durch die Verwendung des Projekts entstehen könnten.
 
-Eine Kopie der Lizenz finden Sie [hier](LICENSE).
+Eine Kopie der Lizenz finden Sie [hier](../LICENSE).
 
 
