@@ -13,6 +13,11 @@ Um die erforderlichen Bibliotheken zu installieren, führen Sie den folgenden Be
 pip3 install numpy PyMuPDF PyQt5
 ```
 
+## Unterstützte Universitäten
+
+- Universität Wien
+- Weitere Universitäten folgen
+
 ## Verwendung
 
 Führen Sie das [Schnittrechner.py](../Rechner/src/Schnittrechner.py) Skript aus. Ein Fenster öffnet sich, in dem Sie die PDF-Dateien auswählen können. Nachdem Sie die Dateien ausgewählt haben, klicken Sie auf den Button "Berechnen". Die PDF-Datei sollte sich im Ordner "Data" befinden und die Noten und ECTS-Punkte sollten im Format "Note (Dezimalzahl) ECTS" angegeben sein.

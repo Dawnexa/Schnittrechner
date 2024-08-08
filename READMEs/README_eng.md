@@ -15,6 +15,11 @@ To install the required libraries, run the following command:
 pip3 install numpy PyMuPDF PyQt6
 ```
 
+# Supported universities
+
+- University of Vienna
+- More universities to come
+
 ## Usage
 
 Run the [Schnittrechner.py](../Rechner/src/Schnittrechner.py) script. A window will open where you can select the PDF files. After selecting the files, click on the "Calculate" button. The PDF file should be in the "Data" folder and the grades and ECTS points should be indicated in the format "Grade (decimal number) ECTS".
