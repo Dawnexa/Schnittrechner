@@ -95,20 +95,21 @@ class Schnittrechner:
             self.sum_ects = get_sum(self.ects)
         return self.sum_ects
     
-    # def calculation_given(self, ects, grades):
-    #     """Calculate average grade with given ECTS and grades
+    def calculation_given(self, ects, grades):
+        """Calculate average grade with given ECTS and grades
 
-    #     Args:
-    #         ects (list): ECTS
-    #         grades (list): Grades
+        Args:
+            ects (list): ECTS
+            grades (list): Grades
 
-    #     Returns:
-    #         float: Average grade
-    #     """
-    #     ects = np.array(ects, dtype=float)
-    #     grades = np.array(grades, dtype=float)
-    #     self.average_grade = np.sum(ects * grades) / np.sum(ects)
-    #     return self.average_grade
+        Returns:
+            float: Average grade
+        """
+        if get_sum(ects) == 0:
+            return 0
+        else:
+            self.average_grade = get_multsum(ects, grades) / get_sum(ects)
+            return self.average_grade
     
     def calculation(self):
         """Calculate average grade with ECTS and grades from PDF file
