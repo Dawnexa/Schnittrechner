@@ -22,7 +22,7 @@ pip3 install numpy PyMuPDF PyQt6
 
 ## Usage
 
-Run the [Schnittrechner.py](../Rechner/src/Schnittrechner.py) script. A window will open where you can select the PDF files. After selecting the files, click on the "Calculate" button. The PDF file should be in the "Data" folder and the grades and ECTS points should be indicated in the format "Grade (decimal number) ECTS".
+Run the [Schnittrechner.py](../Rechner/src/Schnittrechner.py) script. A window will open where you can select the PDF files. After selecting the files, click on the "Calculate" button.
 
 The script reads the PDF file, extracts the grades and ECTS points, and calculates the weighted average of the grades.
 
