@@ -20,7 +20,7 @@ Please note that this project is released with a Contributor Code of Conduct. By
 
 You can find the Code of Conduct in different languages here:
 
-- [CODE_OF_CONDUCT_de.md](CoConducts/CODE_OF_CONDUCT_ENG.md) (German)
+- [CODE_OF_CONDUCT_de.md](CoConducts/CODE_OF_CONDUCT_GER.md) (German)
 - [CODE_OF_CONDUCT_eng.md](CoConducts/CODE_OF_CONDUCT_ENG.md) (English)
 
 
