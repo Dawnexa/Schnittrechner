@@ -16,3 +16,4 @@ def test_calc_average():
 if __name__ == "__main__":
     test_calc_average()
     print("Everything passed")
+    print("Tested function: Schnittrechner.calculation_given")
