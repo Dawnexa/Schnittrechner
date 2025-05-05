@@ -122,3 +122,23 @@ von Personen.
 
 **Folge**: Ein dauerhaftes Verbot jeglicher Art von öffentlicher Interaktion
 innerhalb der Gemeinschaft.
+
+## Bezug
+
+Dieser Verhaltenskodex basiert auf dem [Contributor Covenant][homepage],
+Version 2.1, verfügbar unter
+[https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].
+
+Community Impact Guidelines wurden von
+[Mozillas Code of Conduct Enforcement Ladder][mozilla] inspiriert.
+
+Antworten auf häufig gestellte Fragen zu diesem Verhaltenskodex finden Sie in
+den häufig gestellten Fragen unter <https://www.contributor-covenant.org/faq>
+(in Englisch). Andere Übersetzungen sind verfügbar unter
+<https://www.contributor-covenant.org/translations>.
+
+[homepage]: https://www.contributor-covenant.org
+[v2.1]: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+[mozilla]: https://github.com/mozilla/inclusion
+
+
